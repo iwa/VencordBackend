@@ -1,0 +1,44 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [deploy]
+  pull_request:
+    branches: [deploy]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: vencord-backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v4.0.0
+        with:
+          go-version: 1.20
+          go-version-file: go.mod
+          cache: false
+          cache-dependency-path: go.sum
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          logout: true
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3.1.0
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/iwa/${{ env.IMAGE_NAME }}:latest
