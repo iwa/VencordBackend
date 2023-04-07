@@ -108,6 +108,10 @@ func main() {
 	REDIS_URI := os.Getenv("REDIS_URI")
 	ROOT_REDIRECT := os.Getenv("ROOT_REDIRECT")
 
+	// print host and port for debugging
+	fmt.Println("HOST:", HOST)
+	fmt.Println("PORT:", PORT)
+
 	DISCORD_CLIENT_ID := os.Getenv("DISCORD_CLIENT_ID")
 	DISCORD_CLIENT_SECRET := os.Getenv("DISCORD_CLIENT_SECRET")
 	DISCORD_REDIRECT_URI := os.Getenv("DISCORD_REDIRECT_URI")
