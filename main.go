@@ -300,7 +300,7 @@ func main() {
 	// #endregion
 
 	// #region erase all
-	app.Delete("/v1/", requireAuth, func(c *fiber.Ctx) error {
+	app.Delete("/v1", requireAuth, func(c *fiber.Ctx) error {
 		userId := c.Context().UserValue("userId").(string)
 
 		rdb.Del(c.Context(), "settings:"+hash(PEPPER_SETTINGS+userId))
@@ -310,7 +310,13 @@ func main() {
 	})
 	// #endregion
 
-	app.Get("/v1/", func(c *fiber.Ctx) error {
+	app.Get("/v1", func(c *fiber.Ctx) error {
+		return c.JSON(&fiber.Map{
+            "ping": "pong",
+        })
+	})
+
+	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Redirect(ROOT_REDIRECT, 303)
 	})
 
